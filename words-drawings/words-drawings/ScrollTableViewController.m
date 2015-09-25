@@ -64,8 +64,7 @@
     currentSketchGuess.sketch.sketchImage = drawnImage;
 
     //Prepare the next Cell
-    [self.jotVC clearAll];
-    [self showGuessCell];
+      [self showGuessCell];
     
     //Present the interstitial View Controlle
   }];
@@ -120,16 +119,25 @@
   SketchGuess *currentSketchGuess = self.sketchGuesses[self.currentSketchGuessIndex];
   
   if (currentSketchGuess.guess) {
-    NSIndexPath *destinationIndexPath = [NSIndexPath indexPathForRow:1 inSection:self.currentSketchGuessIndex];
+
+    PassViewController *passView = [[PassViewController alloc] initWithNibName:@"PassViewController" bundle:[NSBundle mainBundle]];
     
-    [self.scrollTableView scrollToRowAtIndexPath:destinationIndexPath
-                                atScrollPosition:UITableViewScrollPositionTop
-                                        animated:NO];
+    [CATransaction begin];
+
+    [CATransaction setCompletionBlock:^{
+      //whatever you want to do after the push
+      NSIndexPath *destinationIndexPath = [NSIndexPath indexPathForRow:1 inSection:self.currentSketchGuessIndex];
+      
+      [self.scrollTableView scrollToRowAtIndexPath:destinationIndexPath
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:NO];
+      [self.jotVC clearAll];
+      
+    }];
+    [_navController pushViewController:passView animated:YES];
     
-    
-      PassViewController *passView = [[PassViewController alloc] initWithNibName:@"PassViewController" bundle:[NSBundle mainBundle]];
-      [_navController pushViewController:passView animated:YES];
-    
+    [CATransaction commit];
+  
   } else {
      [self performSegueWithIdentifier:@"ShowEndOfGame" sender:self];
   }
