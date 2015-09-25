@@ -15,7 +15,6 @@
 #import "SketchGuess.h"
 #import "Sketch.h"
 #import "Guess.h"
-#import "EndOfGameViewController.h"
 
 @interface ScrollTableViewController () <JotViewControllerDelegate, UITextFieldDelegate>
 
@@ -28,7 +27,7 @@
 @property (strong, nonatomic) DrawingTableViewCell *currentDrawingCell;
 @property (strong, nonatomic) WordsTableViewCell *currentWordsCell;
 @property (nonatomic, strong) JotViewController *jotVC;
-//@property (strong, nonatomic) NSMutableArray *sketchGuesses;
+@property (strong, nonatomic) NSMutableArray *sketchGuesses;
 @property (nonatomic) NSInteger currentSketchGuessIndex;
 
 @end
@@ -43,8 +42,6 @@
   self.currentSketchGuessIndex = 0;
   self.scrollTableView.allowsSelection = NO;
   self.currentWordsCell.textField.delegate = self;
-
-//  self.currentWordsCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
   NSLog(@"SEED PROMPT: %@", _seedPrompt);
   
   _promptArray = [[NSMutableArray alloc] init];
@@ -52,7 +49,7 @@
   
   _drawingArray = [[NSMutableArray alloc] init];
   
-  //self.numberOfRows = self.numberOfPlayers - 1;
+  self.numberOfRows = self.numberOfPlayers - 1;
 
   UINib *wordsCell = [UINib nibWithNibName:@"wordsCell" bundle:nil];
   [self.scrollTableView registerNib:wordsCell forCellReuseIdentifier:@"wordsCell"];
@@ -67,8 +64,7 @@
     currentSketchGuess.sketch.sketchImage = drawnImage;
 
     //Prepare the next Cell
-    [self.jotVC clearAll];
-    [self showGuessCell];
+      [self showGuessCell];
     
     //Present the interstitial View Controlle
   }];
@@ -102,7 +98,6 @@
       SketchGuess *sketchGuess = [[SketchGuess alloc] init];
       sketchGuess.guess = [[Guess alloc] init];
       sketchGuess.sketch = [[Sketch alloc] init];
-      //sketchGuess.prompt = _seedPrompt;
       [self.sketchGuesses addObject:sketchGuess];
     }
   } else {
@@ -124,16 +119,25 @@
   SketchGuess *currentSketchGuess = self.sketchGuesses[self.currentSketchGuessIndex];
   
   if (currentSketchGuess.guess) {
-    NSIndexPath *destinationIndexPath = [NSIndexPath indexPathForRow:1 inSection:self.currentSketchGuessIndex];
+
+    PassViewController *passView = [[PassViewController alloc] initWithNibName:@"PassViewController" bundle:[NSBundle mainBundle]];
     
-    [self.scrollTableView scrollToRowAtIndexPath:destinationIndexPath
-                                atScrollPosition:UITableViewScrollPositionTop
-                                        animated:NO];
+    [CATransaction begin];
+
+    [CATransaction setCompletionBlock:^{
+      //whatever you want to do after the push
+      NSIndexPath *destinationIndexPath = [NSIndexPath indexPathForRow:1 inSection:self.currentSketchGuessIndex];
+      
+      [self.scrollTableView scrollToRowAtIndexPath:destinationIndexPath
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:NO];
+      [self.jotVC clearAll];
+      
+    }];
+    [_navController pushViewController:passView animated:YES];
     
-    
-      PassViewController *passView = [[PassViewController alloc] initWithNibName:@"PassViewController" bundle:[NSBundle mainBundle]];
-      [_navController pushViewController:passView animated:YES];
-    
+    [CATransaction commit];
+  
   } else {
      [self performSegueWithIdentifier:@"ShowEndOfGame" sender:self];
   }
@@ -214,15 +218,5 @@
   return cellHeight;
 }
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  if([[segue identifier] isEqualToString:@"ShowEndOfGame"]) {
-    EndOfGameViewController *endOfGameVC = [segue destinationViewController];
-    endOfGameVC.sketchGuesses = self.sketchGuesses;
-    
-  }
-}
 
 @end

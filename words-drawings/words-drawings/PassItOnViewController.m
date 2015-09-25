@@ -11,7 +11,10 @@
 #import "ScrollTableViewController.h"
 #import "ChooseOptionViewController.h"
 
+
 @interface PassItOnViewController ()
+
+
 
 @end
 
@@ -37,10 +40,16 @@
     UINavigationController *navController = (UINavigationController*)[segue destinationViewController];
     ScrollTableViewController *scrollTVC = (ScrollTableViewController *)[navController topViewController];
     [scrollTVC setNavController:navController];
-
+//     ScrollTableViewController *scrollTVC = (ScrollTableViewController *)[segue destinationViewController];
      scrollTVC.seedPrompt = self.stringToPass;
     scrollTVC.numberOfPlayers = self.numberOfPlayers;
     scrollTVC.durationOfRound = self.durationOfRound;
+//
+//    ScrollTableViewController *scrollTVC = [segue destinationViewController];
+//    //passItOnVC.stringToPass = self.seedPrompt;
+//    scrollTVC.seedPrompt = self.stringToPass;
+    
+  
   }
 }
 

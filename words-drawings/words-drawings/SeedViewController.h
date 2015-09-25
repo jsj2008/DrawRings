@@ -13,7 +13,5 @@
 @interface SeedViewController : UIViewController
 
 @property (strong,nonatomic) NSString *seedSentence;
-@property NSInteger numberOfPlayers;
-@property NSInteger durationOfRound;
 
 @end

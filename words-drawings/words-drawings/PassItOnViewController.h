@@ -16,5 +16,6 @@
 @property NSInteger durationOfRound;
 
 @property (strong,nonatomic) NSString *stringToPass;
+//@property (strong,nonatomic) some kind of file that'll hold a drawing
 
 @end

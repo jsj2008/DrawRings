@@ -10,7 +10,7 @@
 #import "ScrollTableViewController.h"
 #import "PassItOnViewController.h"
 
-@interface WordsTableViewCell () <UITextFieldDelegate>
+@interface WordsTableViewCell ()
 
 @end
 
@@ -23,17 +23,9 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:@"doneGuessingNotification" object:self];
 }
 
--(BOOL) textFieldShouldReturn: (UITextField *) textField
-{
-
-  [_textField resignFirstResponder];
-
-  return YES;
-}
 
 - (void)awakeFromNib {
     // Initialization code
-  _textField.delegate = self;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -14,5 +14,4 @@
 @interface SketchGuess : NSObject
 @property (strong, nonatomic) Sketch *sketch;
 @property (strong, nonatomic) Guess *guess;
-@property (strong, nonatomic) NSString *prompt;
 @end

@@ -9,7 +9,7 @@
 #import "MainViewController.h"
 #import "BackgroundGradient.h"
 #import <QuartzCore/QuartzCore.h>
-#import "BetterInstructionsViewController.h"
+#import "InstructionViewController.h"
 
 CGFloat const kInstructionMenuHeightMultiplier = 0.75;
 CGFloat const kInstructionMenuWidthMultiplier = 0.75;
@@ -23,7 +23,6 @@ CGFloat const kInstructionMenuWidthMultiplier = 0.75;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
   //UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
   //  CAGradientLayer *gradient = [CAGradientLayer layer];
   //  gradient.frame = self.view.bounds;
@@ -50,11 +49,11 @@ CGFloat const kInstructionMenuWidthMultiplier = 0.75;
  */
 
 - (IBAction)instructionsButton:(id)sender {
-  BetterInstructionsViewController *instructionVC = [self.storyboard instantiateViewControllerWithIdentifier:@"InstructionVC"];
+  InstructionViewController *instructionVC = [self.storyboard instantiateViewControllerWithIdentifier:@"InstructionVC"];
   [self addChildViewController:instructionVC];
   
   instructionVC.view.frame = CGRectMake((self.view.frame.size.width - instructionVC.view.frame.size.width)/2, (self.view.frame.size.height - instructionVC.view.frame.size.height)/2, self.view.frame.size.width * kInstructionMenuWidthMultiplier, self.view.frame.size.height * kInstructionMenuHeightMultiplier);
-
+  //instructionVC.view.layer.cornerRadius = 0.0;
   instructionVC.view.layer.masksToBounds = false;
   instructionVC.view.center = self.view.center;
   [self.view addSubview:instructionVC.view];
@@ -64,5 +63,7 @@ CGFloat const kInstructionMenuWidthMultiplier = 0.75;
   [UIView animateWithDuration:0.4 animations:^{
     instructionVC.view.alpha = 1;
   }];
+  
+  
 }
 @end
